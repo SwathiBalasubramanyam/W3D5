@@ -28,4 +28,35 @@ class PolyTreeNode
         end
         child_node.parent = nil
     end
+
+    def dfs(target_value)
+        return self if self.value == target_value
+        self.children.each{|child_node| 
+            res = child_node.dfs(target_value)
+            return res if res
+        }
+        return nil
+    end
+
+    def inspect
+        # puts "#<PloyTreeNode: #{self.object_id}, @value=#{self.value}, @children=#{self.children.each{|child| child.value}}"
+    end
+
+    def bfs(target_value)
+        return self if self.value == target_value
+        return nil if self.children.empty?
+
+        queue = self.children.dup
+        target_node = nil
+        while !target_node && !queue.empty?
+            child_node = queue.shift
+            if child_node.value == target_value
+                target_node = child_node
+            elsif !child_node.children.empty?
+                queue += child_node.children
+            end
+        end
+        return target_node
+    end
+
 end
