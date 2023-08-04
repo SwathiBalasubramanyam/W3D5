@@ -12,9 +12,9 @@ class PolyTreeNode
     attr_writer :children
 
     def parent=(node_instance)
-        if node_instance 
-            @parent = node_instance
-            node_instance.children << self if node_instance.children.each {|child| child.value != self.value}
-        end
+        current_parent = @parent
+        @parent = node_instance
+        node_instance.children << self if node_instance && !node_instance.children.include?(self)
+        current_parent.children.delete(self) if current_parent && current_parent != node_instance
     end
 end
